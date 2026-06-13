@@ -157,7 +157,7 @@ When you query an external table, Snowflake doesn't scan the whole file every ti
 
 **Variant Column by Default:** When you query an external table, the data initially lands in a single VARIANT column representing the file contents. You can create explicitly defined columns or views on top of this VARIANT column to map fields to proper datatypes.
 
-**Metadata Columns: **Every external table automatically includes built-in metadata columns, specifically METADATA$FILENAME and METADATA$FILE_ROW_NUMBER.
+**Metadata Columns:** Every external table automatically includes built-in metadata columns, specifically METADATA$FILENAME and METADATA$FILE_ROW_NUMBER.
 
 **Auto-Refresh:** You can configure external tables to automatically refresh their metadata whenever a new file is added to your cloud storage using event notifications (e.g., AWS S3 EventBridge)
 
@@ -176,7 +176,10 @@ Iceberg tables in Snowflake are a special table type that stores data and metada
 
 Apache Iceberg is an open-source, high-performance table format originally created by Netflix to handle massive analytical datasets in data lakes. Snowflake's integration relies on three main components:
 
-**Parquet Files:** The raw data is stored in the highly optimized, columnar Apache Parquet format.**Iceberg Metadata:** A robust metadata layer tracks table schemas, file statistics, partitions, and snapshots. This prevents the query engine from having to scan every single file, drastically improving performance.
+**Parquet Files:** The raw data is stored in the highly optimized, columnar Apache Parquet format.
+
+**Iceberg Metadata:** A robust metadata layer tracks table schemas, file statistics, partitions, and snapshots. This prevents the query engine from having to scan every single file, drastically improving performance.
+
 **External Volumes:** An object inside Snowflake that securely connects to your cloud bucket (Amazon S3, Google Cloud Storage, or Azure Storage) using cloud identity and access management
 
 When you create an Iceberg table in Snowflake, you must choose who manages the table's lifecycle and metadata updates:
