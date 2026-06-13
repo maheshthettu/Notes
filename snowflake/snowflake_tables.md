@@ -182,9 +182,11 @@ Apache Iceberg is an open-source, high-performance table format originally creat
 
 **External Volumes:** An object inside Snowflake that securely connects to your cloud bucket (Amazon S3, Google Cloud Storage, or Azure Storage) using cloud identity and access management
 
-When you create an Iceberg table in Snowflake, you must choose who manages the table's lifecycle and metadata updates:
+When you create an Iceberg table in Snowflake, you must choose who manages the table's lifecycle and metadata updates: <br>
+
 **Snowflake as the Catalog (Snowflake-Managed):**
 Snowflake has read and write (DML) permissions.Snowflake handles automated maintenance like file compaction, garbage collection, and data snapshots.Other external engines (like Apache Spark or Flink) can still read this data directly from your storage.
+
 **External Catalog (Externally-Managed):**
 An external service like AWS Glue, Apache Polaris, or object storage maintains the metadata.Snowflake treats this table primarily as read-only (acting like a highly optimized external table).
  
