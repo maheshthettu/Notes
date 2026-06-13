@@ -186,6 +186,7 @@ When you create an Iceberg table in Snowflake, you must choose who manages the t
 
 **Snowflake as the Catalog (Snowflake-Managed):**
 Snowflake has read and write (DML) permissions.Snowflake handles automated maintenance like file compaction, garbage collection, and data snapshots.Other external engines (like Apache Spark or Flink) can still read this data directly from your storage.
+
 **External Catalog (Externally-Managed):**
 An external service like AWS Glue, Apache Polaris, or object storage maintains the metadata.Snowflake treats this table primarily as read-only (acting like a highly optimized external table).
  
