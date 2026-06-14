@@ -1,0 +1,6 @@
+1. Create a UI for Login and Register Page.
+2. Login Page 
+3. Data Loading Page 
+4. Data Loading and Processing 
+5. Creating Dash Board 
+
