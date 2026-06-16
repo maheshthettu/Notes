@@ -1,3 +1,10 @@
 1. what is locking in  database ?
 2.what is data skewness?
 3.what is search optimiZation ?
+
+
+-------------------------------------Things To Practice -------------------------------
+1.creating all three internal stages and loading file into it .
+2.creating external stage and loading data into table.
+3.creating external tables.
+
