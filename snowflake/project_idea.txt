@@ -3,4 +3,9 @@
 3. Data Loading Page 
 4. Data Loading and Processing 
 5. Creating Dash Board 
-
+6. Data base 
+school>>>class>>
+1.student_detail
+2.subject
+3.teacher
+4.marks
