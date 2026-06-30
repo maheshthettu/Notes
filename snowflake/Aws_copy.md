@@ -66,20 +66,20 @@ credentials=(aws_key_id='AKIASMJI5MH3P3GI43NS' aws_secret_key='');
 7. create a Storage Integration 
 
 ```sql
-CREATE OR REPLACE STORAGE INTEGRATION student_s3_int
+CREATE OR REPLACE STORAGE INTEGRATION student_int
 type=external_stage 
 storage_provider=s3
 enabled=true
-storage_aws_role_arn='arn:aws:iam::163831439862:role/aws_data_ingest'
-storage_allowed_locations=('s3://amz-snowpipe-csv/studentcsv/');
+storage_aws_role_arn='arn:aws:iam::163831439862:role/sagar'
+storage_allowed_locations=('s3://amz-new-bucket-pipe/raw/');
 ```
 8. Crate a Stage
 
 ```sql 
 CREATE OR REPLACE  STAGE EXTERNAL_S3_INT
 FILE_FORMAT= SCHOOL.CLASS9.STUDENTCSV
-Storage_integration=student_s3_int
-URL='s3://amz-snowpipe-csv/studentcsv/';
+Storage_integration=student_int
+URL='s3://amz-new-bucket-pipe/raw/';
 
 COPY INTO SCHOOL.CLASS9.MARKS
 FROM @EXTERNAL_S3_INT;
