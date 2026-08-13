@@ -1,0 +1,65 @@
+snowflake tables  :
+
+In Snowflake, tables are generally used to store the data in the form of rows and columns.
+Based on their availability and data protection features, they are classified into three types.
+
+1.Parmanent Tables 
+2.Temporary Tables 
+3.Transient Tables 
+
+------------------------------------------------------------------------------------
+Parmanent Tables  :
+In Snowflake, permanent tables will store the data within and outside of the current session.
+These tables support features like Time Travel and Fail-safe.
+These are generally used for permanent/production data storage.
+
+CREATE OR REPLACE TABLE TABLE_NAME 
+(
+    COLUMN_NAME1 DATA TYPE NOT NULL,
+    COLUMN_NAME2 DATA TYPE NOT NULL
+);
+
+
+Temporary Tables  :
+In Snowflake, temporary tables will store the data only within the current session.
+These tables are session-specific and will be automatically dropped when the session ends.
+They support Time Travel up to 1 day, but do not support Fail-safe.
+These tables are generally created to use as intermediate tables in data transformation.
+
+CREATE OR REPLACE TEMPORARY TABLE TABLE_NAME 
+(
+    COLUMN_NAME1 DATA TYPE NOT NULL,
+    COLUMN_NAME2 DATA TYPE NOT NULL
+);
+
+
+Transient Tables :
+
+These tables work like Permanent Tables, which means they can be accessed within and outside the current session.
+But they don't have the Fail-safe feature.
+They support Time Travel up to 1 day.
+These tables are generally used for staging or intermediate data.
+
+Time Travel and fail safe  :
+        Tables         || Time Travel   || Fail Safe  
+    Parmanent Tables   ||  0-90 days    ||  7 days
+    Temporary Tables   ||  0-1 days*     ||  0 days 
+    Transient Tables   ||  0-1 days     ||  0 days 
+
+CREATE OR REPLACE TRANSIENT TABLE TABLE_NAME 
+(
+    COLUMN_NAME1 DATA TYPE NOT NULL,
+    COLUMN_NAME2 DATA TYPE NOT NULL
+);
+
+Temporary Tables timetravel : 
+Snowflake temporary tables are session-scoped.
+Time Travel can be used on a temporary table during its session.
+Once the session ends, the temporary table is automatically dropped,
+and its historical data cannot be accessed from another session.
+
+
+
+
+
+
