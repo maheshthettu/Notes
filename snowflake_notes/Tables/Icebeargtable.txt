@@ -1,0 +1,23 @@
+Iceberg Table :
+
+Iceberg tables in Snowflake are created based on Apache Iceberg open table format. 
+Parquet is the file format generally used to store the actual data.
+
+Actual data can be stored in external cloud storage such as Amazon S3, Azure Blob Storage, 
+or Google Cloud Storage, while Iceberg metadata manages the data files and table structure.
+
+For example, suppose a company already has huge amounts of data stored in S3 as Parquet files.
+Instead of moving all that data into Snowflake storage, 
+we can use Iceberg so that Snowflake can work with the data directly from the external storage.
+
+S3 → Parquet Files → Iceberg Table → Snowflake → SQL Queries
+
+CREATE ICEBERG TABLE CUSTOMER_ICEBERG (
+CUSTOMER_ID INT,
+CUSTOMER_NAME STRING,
+CITY STRING,
+AGE INT
+)
+EXTERNAL_VOLUME = 'MY_EXTERNAL_VOLUME'
+CATALOG = 'SNOWFLAKE'
+BASE_LOCATION = 'customer/';

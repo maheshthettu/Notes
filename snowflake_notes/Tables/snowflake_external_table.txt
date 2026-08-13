@@ -1,0 +1,56 @@
+External Tables  :
+
+In Snowflake, External Tables are used when we want to store the actual data 
+outside Snowflake storage and query that data from Snowflake. The data files of an 
+External Table are stored in an external cloud storage service such as AWS S3, 
+Azure Blob Storage, or Google Cloud Storage. Snowflake stores the table schema 
+and metadata about the external files, and using this metadata, 
+Snowflake can query the data directly from the external storage.
+
+DML operation cannot be supported in External Tables.
+Steps to create a External Table : 
+
+Storage Account : s3://my-company-bucket/employees/
+
+Storage integration : 
+CREATE STORAGE INTEGRATION S3_INTEGRATION
+TYPE = EXTERNAL_STAGE
+STORAGE_PROVIDER = 'S3'
+ENABLED = TRUE
+STORAGE_AWS_ROLE_ARN = 'arn:aws:iam::123456789012:role/snowflake_role'
+STORAGE_ALLOWED_LOCATIONS = ('s3://my-company-bucket/employees/');
+
+Stage: 
+CREATE STAGE EMPLOYEE_STAGE
+URL = 's3://my-company-bucket/employees/'
+STORAGE_INTEGRATION = S3_INTEGRATION;
+
+File Format: 
+CREATE FILE FORMAT EMPLOYEE_CSV_FORMAT
+TYPE = CSV
+FIELD_DELIMITER = ','
+SKIP_HEADER = 1;
+
+External Table : 
+
+CREATE EXTERNAL TABLE EXT_EMPLOYEES
+(
+    EMP_ID NUMBER AS (VALUE:c1::NUMBER),
+    EMP_NAME VARCHAR AS (VALUE:c2::VARCHAR),
+    DEPARTMENT VARCHAR AS (VALUE:c3::VARCHAR),
+    SALARY NUMBER AS (VALUE:c4::NUMBER)
+)
+WITH LOCATION = @EMPLOYEE_STAGE
+FILE_FORMAT = EMPLOYEE_CSV_FORMAT;
+
+Meta Data columns : 
+METADATA$FILENAME
+METADATA$FILE_ROW_NUMBER
+METADATA$FILE_CONTENT_KEY
+METADATA$FILE_LAST_MODIFIED
+
+
+Time Travel :
+Time Travel is not supported for External Tables in the same way as regular Snowflake tables because the actual data is stored outside Snowflake.
+Snowflake only maintains metadata about the external files. Therefore, we cannot use Snowflake Time Travel to query previous versions of the external data.
+If historical recovery is required, we need to maintain file versions in the external storage or load the data into a Snowflake table where Time Travel is supported.
