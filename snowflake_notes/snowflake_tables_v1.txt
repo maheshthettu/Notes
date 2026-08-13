@@ -43,7 +43,7 @@ These tables are generally used for staging or intermediate data.
 Time Travel and fail safe  :
         Tables         || Time Travel   || Fail Safe  
     Parmanent Tables   ||  0-90 days    ||  7 days
-    Temporary Tables   ||  0-1 days*     ||  0 days 
+    Temporary Tables   ||  0-1 days*    ||  0 days 
     Transient Tables   ||  0-1 days     ||  0 days 
 
 CREATE OR REPLACE TRANSIENT TABLE TABLE_NAME 
