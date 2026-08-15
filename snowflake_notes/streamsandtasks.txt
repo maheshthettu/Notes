@@ -1,0 +1,153 @@
+Task :
+
+Task is a snowflake built-in sceduling object generally used to orchestrate the SQL statements
+Based on time and its dependency .
+
+Based on trigger condition tasks are two type 
+1.Time based 
+2.Event Based 
+
+CREATE OR REPLACE TASK TASK_NAME 
+WAREHOUSE= COMPUTE_WH
+SCHEDULE = ' 2 mins'
+AS 
+INSERT INTO TARGET 
+SELECT * FROM SOURCE 
+;
+
+
+CREATE OR REPLACE TASK TASK_NAME 
+WAREHOUSE= COMPUTE_WH
+SCHEDULE = ' 2 mins'
+WHEN SYSTEM$STREAM_HAS_DATA('stream_name')
+AS 
+INSERT INTO TARGET 
+SELECT * FROM SOURCE 
+;
+
+CORN * * * * * Asia/Kolkata ---> to secedule the Jobs 
+
+
+ALTER TASK TASK_NAME RESUME;
+ALTER TASK TASK_NAME SUSPEND ;
+
+
+-------------------------------------------------------
+
+1. Stram :
+Stream is snowflake Change data Capture object . Which is used to track the chnages 
+like INSERT,UPDATE,DELETE on top of at table or view .
+
+1.Standard streams 
+2.Append only stream 
+3.Insert-Only Stream
+
+CREATE STREAM  STREAM_SH ON TABLE SOURCE ;
+CREATE STREAM  STREAM_SH ON TABLE SOURCE  APPEND_ONLY = TRUE ;
+CREATE STREAM  STREAM_SH ON EXTERNAL TABLE SOURCE  INSERT_ONLY = TRUE ;
+
+
+METADATA$ACTION
+METADATA$ISUPDATE
+METADATA$ROW_ID
+
+
+----------------------CREATE A MERGE 
+
+
+SCD TYPE 1 :
+
+MERGE INTO TARGET T 
+USING SOURCE S
+ON S.ID = T.ID 
+WHEN MATCHED THEN
+UPDATE SET T.NAME=S.NAME 
+WHEN NOT MATCHED THEN 
+INSERT (
+    ID ,
+    NAME 
+)
+VALUES (
+    S.ID,
+    S.NAME
+);
+
+
+-- 1. UPDATE existing active record
+UPDATE TARGET T
+SET
+    T.IS_ACTIVE = FALSE,
+    T.END_DATE = CURRENT_DATE()
+FROM SOURCE_STREAM S
+WHERE T.ID = S.ID
+  AND T.IS_ACTIVE = TRUE
+  AND S.METADATA$ACTION = 'INSERT'
+  AND S.METADATA$ISUPDATE = TRUE;
+
+INSERT INTO TARGET
+(
+    ID,
+    NAME,
+    SALARY,
+    DEPARTMENT,
+    START_DATE,
+    END_DATE,
+    IS_ACTIVE
+)
+SELECT
+    S.ID,
+    S.NAME,
+    S.SALARY,
+    S.DEPARTMENT,
+    CURRENT_DATE(),
+    NULL,
+    TRUE
+FROM SOURCE_STREAM S;
+
+
+
+
+;
+
+
+
+SCD TYPE 1:
+
+MERGE INTO TARGET T 
+USING SOURCE S
+on t.ID=S.ID 
+WHEN MATCHED THEN 
+UPDATE SET t.NAME = S.NAME 
+WHEN NOT MATCHED  THEN 
+INSRET (
+    ID,
+    NAME
+)
+VALUES(
+    S.ID,
+    S.NAME 
+) ;
+
+
+SCD TYPE 2:
+
+MERGE INTO TARGET T
+USING SOURCE S
+ON  T.ID = S.ID and T.Is_active= TRUE 
+WHEN MATCHED THEN 
+UPDATE SET T.Is_active= FALSE 
+           T.UPDATED_AT= CURRENT_TS ;
+
+
+INSERT INTO TARGE (ID,
+NAME,
+IS_ACTIVE,
+UPDATED_TS )
+SELECT ID,NAME , TRUE,NULL 
+FROM SOURCE WHERE METADATA$ACTION='INSERT' ;
+
+
+
+
+
+
